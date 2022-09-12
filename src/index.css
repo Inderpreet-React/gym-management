@@ -18,10 +18,8 @@
 	[multiple],
 	textarea,
 	select {
-		@apply rounded border-2  border-purple-700 bg-[#25273c] text-white focus:border-purple-500 focus:ring-0;
 	}
 	[type="checkbox"],
 	[type="radio"] {
-		@apply rounded focus:border-purple-500 focus:ring-purple-500;
 	}
 }
