@@ -18,9 +18,15 @@
 	[multiple],
 	textarea,
 	select {
-		@apply w-80 rounded border-gray-300 focus:border-indigo-500;
+		@apply w-full rounded border-gray-300 focus:border-indigo-500;
 	}
 	[type="checkbox"],
 	[type="radio"] {
+	}
+}
+
+@layer utilities {
+	.login-clip-path {
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 9% 100%);
 	}
 }
