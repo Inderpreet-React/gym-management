@@ -13,7 +13,7 @@ function Sidebar(props) {
 	return (
 		<nav className="flex h-full w-1/5 flex-col bg-indigo-700 py-8 px-4">
 			<h1 className="w-full text-2xl font-bold text-white">Bruh Gym</h1>
-			<ul className="text-l mt-8 flex h-56 w-full flex-col justify-around text-gray-100">
+			<ul className="text-l mt-8 flex h-56 w-full cursor-pointer flex-col justify-around text-gray-100">
 				<li className={`${liClasses} ${activeClasses}`}>
 					<HomeIcon className={iconClasses} />
 					Dashboard
