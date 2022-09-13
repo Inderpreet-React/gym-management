@@ -26,7 +26,7 @@
 }
 
 @layer utilities {
-	.Navbar-clip-path {
-		clip-path: polygon(1% 0, 100% 0, 99% 100%, 0 100%);
+	.SearchBar {
+		height: 2rem;
 	}
 }
