@@ -1,9 +1,6 @@
 import React from "react";
 import Sidebar from "../components/dashboard/Sidebar";
-import {
-	ArrowLeftOnRectangleIcon,
-	MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import Eren from "../images/Eren.png";
 
 function DashBoardPage(props) {
