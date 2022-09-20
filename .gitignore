@@ -24,3 +24,5 @@ yarn-error.log*
 
 # custom files
 /src/firebase.js
+
+.env
