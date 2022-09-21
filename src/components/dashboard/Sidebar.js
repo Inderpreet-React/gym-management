@@ -1,16 +1,27 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
 	HomeIcon,
 	UserIcon,
 	UserPlusIcon,
 	CreditCardIcon,
 } from "@heroicons/react/24/outline";
+import { act } from "react-dom/test-utils";
 
-function Sidebar(props) {
+function Sidebar() {
+	// const currentLoaction = useLocation();
+	// console.log(currentLoaction.pathname);
 	const liClasses = "flex items-center gap-4 h-12 pl-2 rounded";
 	const iconClasses = "h-5 w-5";
 	const activeClasses = { backgroundColor: "rgb(55 48 163)" };
+
+	// function activeClass(path) {
+	// 	if (currentLoaction.pathname === path) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	return (
 		<nav className="flex h-full w-1/5 flex-col bg-indigo-700 py-8 px-4">
