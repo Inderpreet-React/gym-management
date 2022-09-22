@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import FormSvg from "../../images/FormSvg.svg";
 import { db } from "../../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function NewMemberPanel() {
 	// States
@@ -16,6 +16,7 @@ export default function NewMemberPanel() {
 	const [planState, setPlanState] = useState(1000);
 	const [healthState, setHealthState] = useState("");
 	const [userPayload, setUserPayload] = useState({});
+	const [paymentPayload, setPaymentPayload] = useState({});
 
 	const planAmounts = {
 		1: 1000,
@@ -47,6 +48,7 @@ export default function NewMemberPanel() {
 		const plan = planRef.current.value;
 		const healthIssuesCheckBox = healthIssuesCheckboxRef.current.checked;
 		const healthIssue = healthIssuesRef.current.value;
+		const currentDate = new Date();
 
 		if (healthIssuesCheckBox) {
 			setNameState(name.trim());
@@ -61,9 +63,11 @@ export default function NewMemberPanel() {
 				gender: gender,
 				healthHistory: healthIssue.trim(),
 				currentSubscriptionPlan: plan,
-				joiningDate: "today",
-				currentPlanStartingDate: "today",
-				currentPlanEndingDate: `today + ${plan} months`,
+				joiningDate: Timestamp.now(),
+				currentPlanStartingDate: Timestamp.now(),
+				currentPlanEndingDate: Timestamp.fromDate(
+					new Date(currentDate.setMonth(currentDate.getMonth() + plan))
+				),
 			});
 			console.log(userPayload);
 		} else {
@@ -78,9 +82,11 @@ export default function NewMemberPanel() {
 				gender: gender,
 				healthHistory: null,
 				currentSubscriptionPlan: plan,
-				joiningDate: "today",
-				currentPlanStartingDate: "today",
-				currentPlanEndingDate: `today + ${plan} months`,
+				joiningDate: Timestamp.now(),
+				currentPlanStartingDate: Timestamp.now(),
+				currentPlanEndingDate: Timestamp.fromDate(
+					new Date(currentDate.setMonth(currentDate.getMonth() + plan))
+				),
 			});
 		}
 	}
@@ -92,6 +98,10 @@ export default function NewMemberPanel() {
 
 	function planChangeHandler() {
 		setPlanState(planAmounts[planRef.current.value]);
+	}
+
+	function paymentHandler(e) {
+		e.preventDefault();
 	}
 
 	if (paymentMethod === "Cash") {
@@ -210,7 +220,7 @@ export default function NewMemberPanel() {
 							</div>
 							{renderForm}
 							<button className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200">
-								Pay
+								Add
 							</button>
 						</form>
 					</div>
