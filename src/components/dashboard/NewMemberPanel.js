@@ -19,6 +19,7 @@ export default function NewMemberPanel() {
 	const [planAmountState, setPlanAmountState] = useState(1000);
 	const [planState, setPlanState] = useState(1);
 	const [userPayload, setUserPayload] = useState({});
+	const [healthCheckBox, setHealthCheckBox] = useState(true);
 
 	const planAmounts = {
 		1: 1000,
@@ -121,6 +122,10 @@ export default function NewMemberPanel() {
 	function planChangeHandler() {
 		setPlanAmountState(planAmounts[planRef.current.value]);
 		setPlanState(planRef.current.value);
+	}
+
+	function healthIssueCheckBoxHandler() {
+		setHealthCheckBox(healthIssuesCheckboxRef.current.checked);
 	}
 
 	function paymentHandler(e) {
@@ -253,8 +258,16 @@ export default function NewMemberPanel() {
 							<div className={inputWrapperClasses}>
 								<span className={spanClasses}>Health Issues</span>
 								<div className="flex w-full items-center gap-4">
-									<input ref={healthIssuesCheckboxRef} type="checkbox" />
-									<textarea ref={healthIssuesRef} className="resize-none" />
+									<input
+										onChange={healthIssueCheckBoxHandler}
+										ref={healthIssuesCheckboxRef}
+										type="checkbox"
+									/>
+									<textarea
+										ref={healthIssuesRef}
+										disabled={!healthCheckBox}
+										className="resize-none disabled:cursor-not-allowed"
+									/>
 								</div>
 							</div>
 							<button
