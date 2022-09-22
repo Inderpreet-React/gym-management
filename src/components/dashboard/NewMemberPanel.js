@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import FormSvg from "../../images/FormSvg.svg";
 import { db } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function NewMemberPanel() {
 	// States
@@ -15,6 +15,7 @@ export default function NewMemberPanel() {
 	const [genderState, setGenderState] = useState("");
 	const [planState, setPlanState] = useState(1000);
 	const [healthState, setHealthState] = useState("");
+	const [userPayload, setUserPayload] = useState({});
 
 	const planAmounts = {
 		1: 1000,
@@ -47,17 +48,40 @@ export default function NewMemberPanel() {
 		const healthIssuesCheckBox = healthIssuesCheckboxRef.current.checked;
 		const healthIssue = healthIssuesRef.current.value;
 
-		name.trim();
-		age.trim();
-		healthIssue.trim();
-
 		if (healthIssuesCheckBox) {
-			console.log(
-				`${name} \n${age} \n${gender} \n${plan} \n${healthIssuesCheckBox} \n${healthIssue}`
-			);
+			setNameState(name.trim());
+			setAgeState(age.trim());
+			setGenderState(gender);
+			setPlanState(planAmounts[plan]);
+			setHealthState(healthIssue.trim());
 			setPaymentScreen(true);
+			setUserPayload({
+				name: name.trim(),
+				age: age.trim(),
+				gender: gender,
+				healthHistory: healthIssue.trim(),
+				currentSubscriptionPlan: plan,
+				joiningDate: "today",
+				currentPlanStartingDate: "today",
+				currentPlanEndingDate: `today + ${plan} months`,
+			});
+			console.log(userPayload);
 		} else {
-			console.log("STOP");
+			setNameState(name.trim());
+			setAgeState(age.trim());
+			setGenderState(gender);
+			setPlanState(planAmounts[plan]);
+			setPaymentScreen(true);
+			setUserPayload({
+				name: name.trim(),
+				age: age.trim(),
+				gender: gender,
+				healthHistory: null,
+				currentSubscriptionPlan: plan,
+				joiningDate: "today",
+				currentPlanStartingDate: "today",
+				currentPlanEndingDate: `today + ${plan} months`,
+			});
 		}
 	}
 
