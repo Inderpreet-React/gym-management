@@ -16,11 +16,8 @@ export default function NewMemberPanel() {
 	const [paymentMethod, setPaymentMethod] = useState("Cash");
 	const [paymentScreen, setPaymentScreen] = useState(false);
 
-	const [nameState, setNameState] = useState("");
-	const [ageState, setAgeState] = useState("");
-	const [genderState, setGenderState] = useState("");
-	const [planState, setPlanState] = useState(1000);
-	const [healthState, setHealthState] = useState("");
+	const [planAmountState, setPlanAmountState] = useState(1000);
+	const [planState, setPlanState] = useState(1);
 	const [userPayload, setUserPayload] = useState({});
 
 	const planAmounts = {
@@ -83,18 +80,14 @@ export default function NewMemberPanel() {
 		const currentDate = new Date();
 
 		if (healthIssuesCheckBox) {
-			setNameState(name.trim());
-			setAgeState(age.trim());
-			setGenderState(gender);
-			setPlanState(planAmounts[plan]);
-			setHealthState(healthIssue.trim());
+			setPlanAmountState(planAmounts[plan]);
 			setPaymentScreen(true);
 			setUserPayload({
 				name: name.trim(),
-				age: age.trim(),
+				age: parseInt(age.trim()),
 				gender: gender,
 				healthHistory: healthIssue.trim(),
-				currentSubscriptionPlan: plan,
+				currentSubscriptionPlan: parseInt(plan),
 				joiningDate: Timestamp.now(),
 				currentPlanStartingDate: Timestamp.now(),
 				currentPlanEndingDate: Timestamp.fromDate(
@@ -103,17 +96,14 @@ export default function NewMemberPanel() {
 			});
 			console.log(userPayload);
 		} else {
-			setNameState(name.trim());
-			setAgeState(age.trim());
-			setGenderState(gender);
-			setPlanState(planAmounts[plan]);
+			setPlanAmountState(planAmounts[plan]);
 			setPaymentScreen(true);
 			setUserPayload({
 				name: name.trim(),
-				age: age.trim(),
+				age: parseInt(age.trim()),
 				gender: gender,
 				healthHistory: null,
-				currentSubscriptionPlan: plan,
+				currentSubscriptionPlan: parseInt(plan),
 				joiningDate: Timestamp.now(),
 				currentPlanStartingDate: Timestamp.now(),
 				currentPlanEndingDate: Timestamp.fromDate(
@@ -129,7 +119,8 @@ export default function NewMemberPanel() {
 	}
 
 	function planChangeHandler() {
-		setPlanState(planAmounts[planRef.current.value]);
+		setPlanAmountState(planAmounts[planRef.current.value]);
+		setPlanState(planRef.current.value);
 	}
 
 	function paymentHandler(e) {
@@ -137,19 +128,22 @@ export default function NewMemberPanel() {
 		setLoading(true);
 		if (paymentMethod === "Cash") {
 			const recipt = reciptNoRef.current.value;
-			const amount = planState;
+			const amount = planAmountState;
+			const subscriptionBought = parseInt(planState);
 			const date = Timestamp.now();
 			const paymentPayload = {
 				mode: "Cash",
 				reciptNo: recipt.trim(),
 				amount: amount,
 				date: date,
+				subscriptionBought: subscriptionBought,
 			};
 			createUser(userPayload, paymentPayload);
 		} else if (paymentMethod === "Card") {
 			const bank = bankNameRef.current.value;
 			const card = cardTypeRef.current.value;
-			const amount = planState;
+			const amount = planAmountState;
+			const subscriptionBought = parseInt(planState);
 			const transactionId = transactionIdRef.current.value;
 			const recipt = reciptNoRef.current.value;
 			const paymentPayload = {
@@ -159,6 +153,7 @@ export default function NewMemberPanel() {
 				transactionId: transactionId.trim(),
 				reciptNo: recipt,
 				amount: amount,
+				subscriptionBought: subscriptionBought,
 			};
 			createUser(userPayload, paymentPayload);
 		}
@@ -175,7 +170,7 @@ export default function NewMemberPanel() {
 						</span>
 						<input
 							disabled={true}
-							value={planState}
+							value={planAmountState}
 							className="w-[90%] rounded-l-none border-none  hover:cursor-not-allowed"
 							type="number"
 						/>
