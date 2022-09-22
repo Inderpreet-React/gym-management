@@ -1,7 +1,13 @@
 import React, { useRef, useState } from "react";
 import FormSvg from "../../images/FormSvg.svg";
 import { db } from "../../firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import {
+	collection,
+	addDoc,
+	Timestamp,
+	doc,
+	deleteDoc,
+} from "firebase/firestore";
 
 export default function NewMemberPanel() {
 	// States
@@ -16,7 +22,6 @@ export default function NewMemberPanel() {
 	const [planState, setPlanState] = useState(1000);
 	const [healthState, setHealthState] = useState("");
 	const [userPayload, setUserPayload] = useState({});
-	const [paymentPayload, setPaymentPayload] = useState({});
 
 	const planAmounts = {
 		1: 1000,
@@ -33,6 +38,10 @@ export default function NewMemberPanel() {
 	const healthIssuesCheckboxRef = useRef();
 	const healthIssuesRef = useRef();
 	const paymentMethodRef = useRef(paymentMethod);
+	const reciptNoRef = useRef();
+	const bankNameRef = useRef();
+	const cardTypeRef = useRef();
+	const transactionIdRef = useRef();
 
 	// Classes
 	const spanClasses = "w-1/3";
@@ -40,6 +49,29 @@ export default function NewMemberPanel() {
 	let renderForm = null;
 
 	// Functions
+	async function createUser(userPayload, paymentPayload) {
+		try {
+			const memberRef = await addDoc(collection(db, "members"), userPayload);
+			try {
+				paymentPayload["member"] = memberRef.id;
+				const paymentRef = await addDoc(
+					collection(db, "payment"),
+					paymentPayload
+				);
+				console.log(memberRef.id, paymentRef.id);
+			} catch (e) {
+				console.log(e.code, e.message);
+				setError(e.message);
+				await deleteDoc(doc(db, "members", memberRef.id));
+			}
+		} catch (e) {
+			console.log(e.code, e.message);
+			setError(e.message);
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	function onSubmitHandler(e) {
 		e.preventDefault();
 		const name = nameRef.current.value;
@@ -102,41 +134,80 @@ export default function NewMemberPanel() {
 
 	function paymentHandler(e) {
 		e.preventDefault();
+		setLoading(true);
+		if (paymentMethod === "Cash") {
+			const recipt = reciptNoRef.current.value;
+			const amount = planState;
+			const date = Timestamp.now();
+			const paymentPayload = {
+				mode: "Cash",
+				reciptNo: recipt.trim(),
+				amount: amount,
+				date: date,
+			};
+			createUser(userPayload, paymentPayload);
+		} else if (paymentMethod === "Card") {
+			const bank = bankNameRef.current.value;
+			const card = cardTypeRef.current.value;
+			const amount = planState;
+			const transactionId = transactionIdRef.current.value;
+			const recipt = reciptNoRef.current.value;
+			const paymentPayload = {
+				mode: "Card",
+				bank: bank.trim(),
+				cardType: card,
+				transactionId: transactionId.trim(),
+				reciptNo: recipt,
+				amount: amount,
+			};
+			createUser(userPayload, paymentPayload);
+		}
 	}
 
 	if (paymentMethod === "Cash") {
 		renderForm = (
-			<div className={inputWrapperClasses}>
-				<span className={spanClasses}>Amount</span>
-				<div className="flex h-full w-full items-center rounded border-[1px] border-gray-400">
-					<span className="flex h-full w-[10%] items-center justify-center rounded-l bg-gray-100 text-xl  hover:cursor-not-allowed">
-						₹
-					</span>
-					<input
-						disabled={true}
-						value={planState}
-						className="w-[90%] rounded-l-none border-none  hover:cursor-not-allowed"
-						type="number"
-					/>
+			<>
+				<div className={inputWrapperClasses}>
+					<span className={spanClasses}>Amount</span>
+					<div className="flex h-full w-full items-center rounded border-[1px] border-gray-400">
+						<span className="flex h-full w-[10%] items-center justify-center rounded-l bg-gray-100 text-xl  hover:cursor-not-allowed">
+							₹
+						</span>
+						<input
+							disabled={true}
+							value={planState}
+							className="w-[90%] rounded-l-none border-none  hover:cursor-not-allowed"
+							type="number"
+						/>
+					</div>
 				</div>
-			</div>
+				<div className={inputWrapperClasses}>
+					<span className={spanClasses}>Recipt No.</span>
+					<input ref={reciptNoRef} type="text" />
+				</div>
+			</>
 		);
 	} else if (paymentMethod === "Card") {
 		renderForm = (
 			<>
 				<div className={inputWrapperClasses}>
-					<span className={spanClasses}>Card Number</span>
-					<input type="number" />
+					<span className={spanClasses}>Bank Name</span>
+					<input ref={bankNameRef} type="text" />
 				</div>
 				<div className={inputWrapperClasses}>
-					<span className={spanClasses}>Name on card</span>
-					<input type="text" />
+					<span className={spanClasses}>Card</span>
+					<select ref={cardTypeRef}>
+						<option value="Credit Card">Credit Card</option>
+						<option value="Debit Card">Debit Card</option>
+					</select>
 				</div>
-				<div className="flex w-full items-center justify-between gap-12">
-					<span className="w-1/4 text-gray-600">Expiray Date</span>
-					<input className="w-1/4" type="month" />
-					<span className="w-1/4 text-right text-gray-600">CSV</span>
-					<input className="w-1/4" type="number" />
+				<div className={inputWrapperClasses}>
+					<span className={spanClasses}>Transaction ID</span>
+					<input ref={transactionIdRef} type="text" />
+				</div>
+				<div className={inputWrapperClasses}>
+					<span className={spanClasses}>Recipt No.</span>
+					<input ref={reciptNoRef} type="text" />
 				</div>
 			</>
 		);
@@ -194,7 +265,6 @@ export default function NewMemberPanel() {
 							<button
 								className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200"
 								type="submit"
-								disabled={loading}
 							>
 								Next
 							</button>
@@ -208,7 +278,7 @@ export default function NewMemberPanel() {
 				{paymentScreen ? (
 					<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
 						<form
-							onSubmit={onSubmitHandler}
+							onSubmit={paymentHandler}
 							className="flex w-full flex-col justify-between gap-6"
 						>
 							<div className={inputWrapperClasses}>
@@ -219,7 +289,11 @@ export default function NewMemberPanel() {
 								</select>
 							</div>
 							{renderForm}
-							<button className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200">
+							<button
+								disabled={loading}
+								type="submit"
+								className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200"
+							>
 								Add
 							</button>
 						</form>
