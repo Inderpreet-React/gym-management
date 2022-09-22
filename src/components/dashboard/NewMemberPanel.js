@@ -8,8 +8,10 @@ import {
 	doc,
 	deleteDoc,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export default function NewMemberPanel() {
+	const navigate = useNavigate();
 	// States
 	const [error, setError] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ export default function NewMemberPanel() {
 	const [planAmountState, setPlanAmountState] = useState(1000);
 	const [planState, setPlanState] = useState(1);
 	const [userPayload, setUserPayload] = useState({});
-	const [healthCheckBox, setHealthCheckBox] = useState(true);
+	const [healthCheckBox, setHealthCheckBox] = useState(false);
 
 	const planAmounts = {
 		1: 1000,
@@ -57,6 +59,7 @@ export default function NewMemberPanel() {
 					paymentPayload
 				);
 				console.log(memberRef.id, paymentRef.id);
+				navigate("/dashboard");
 			} catch (e) {
 				console.log(e.code, e.message);
 				setError(e.message);
