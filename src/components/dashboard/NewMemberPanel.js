@@ -183,7 +183,7 @@ export default function NewMemberPanel() {
 				</div>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Recipt No.</span>
-					<input ref={reciptNoRef} type="text" />
+					<input required ref={reciptNoRef} type="text" />
 				</div>
 			</>
 		);
@@ -192,7 +192,7 @@ export default function NewMemberPanel() {
 			<>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Bank Name</span>
-					<input ref={bankNameRef} type="text" />
+					<input required ref={bankNameRef} type="text" />
 				</div>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Card</span>
@@ -203,11 +203,11 @@ export default function NewMemberPanel() {
 				</div>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Transaction ID</span>
-					<input ref={transactionIdRef} type="text" />
+					<input required ref={transactionIdRef} type="text" />
 				</div>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Recipt No.</span>
-					<input ref={reciptNoRef} type="text" />
+					<input required ref={reciptNoRef} type="text" />
 				</div>
 			</>
 		);
