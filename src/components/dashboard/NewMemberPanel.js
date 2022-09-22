@@ -8,6 +8,20 @@ export default function NewMemberPanel() {
 	const [error, setError] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState("Cash");
+	const [paymentScreen, setPaymentScreen] = useState(false);
+
+	const [nameState, setNameState] = useState("");
+	const [ageState, setAgeState] = useState("");
+	const [genderState, setGenderState] = useState("");
+	const [planState, setPlanState] = useState(1000);
+	const [healthState, setHealthState] = useState("");
+
+	const planAmounts = {
+		1: 1000,
+		4: 3000,
+		6: 5000,
+		12: 8000,
+	};
 
 	// Refs
 	const nameRef = useRef();
@@ -41,6 +55,7 @@ export default function NewMemberPanel() {
 			console.log(
 				`${name} \n${age} \n${gender} \n${plan} \n${healthIssuesCheckBox} \n${healthIssue}`
 			);
+			setPaymentScreen(true);
 		} else {
 			console.log("STOP");
 		}
@@ -49,6 +64,10 @@ export default function NewMemberPanel() {
 	function paymentChangeHandler(e) {
 		// console.log(paymentMethodRef.current.value);
 		setPaymentMethod(paymentMethodRef.current.value);
+	}
+
+	function planChangeHandler() {
+		setPlanState(planAmounts[planRef.current.value]);
 	}
 
 	if (paymentMethod === "Cash") {
@@ -61,6 +80,7 @@ export default function NewMemberPanel() {
 					</span>
 					<input
 						disabled={true}
+						value={planState}
 						className="w-[90%] rounded-l-none border-none  hover:cursor-not-allowed"
 						type="number"
 					/>
@@ -90,82 +110,89 @@ export default function NewMemberPanel() {
 
 	return (
 		<div className="h-full w-full bg-white p-4 shadow-md">
-			<div className="relative isolate flex h-full w-full flex-col rounded border-2 border-gray-300 bg-white p-8">
+			<div className="relative isolate flex h-full w-full flex-col rounded border-2 border-indigo-400 bg-white p-8">
 				<img
 					src={FormSvg}
 					alt="form svg"
 					className="absolute right-0 top-1/4 -z-10 h-96 w-96"
 				/>
-				<h1 className="text-center text-2xl font-bold italic text-indigo-600">
+				{/* <h1 className="text-center text-2xl font-bold italic text-indigo-600">
 					Add new member form
-				</h1>
+				</h1> */}
 
-				<div className="flex hidden h-full w-3/4 flex-col justify-center rounded p-4">
-					<form
-						onSubmit={onSubmitHandler}
-						className="flex w-full flex-col justify-between gap-6"
-					>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Name</span>
-							<input ref={nameRef} type="text" />
-						</div>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Age</span>
-							<input ref={ageRef} type="number" min="16" max="100" />
-						</div>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Gender</span>
-							<select ref={genderRef}>
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
-							</select>
-						</div>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Select plan</span>
-							<select ref={planRef}>
-								<option value="1">1 Month - ₹ 1000</option>
-								<option value="4">4 Month - ₹ 3000</option>
-								<option value="6">6 Month - ₹ 5000</option>
-								<option value="12">12 Month - ₹ 8000</option>
-							</select>
-						</div>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Health Issues</span>
-							<div className="flex w-full items-center gap-4">
-								<input ref={healthIssuesCheckboxRef} type="checkbox" />
-								<textarea ref={healthIssuesRef} className="resize-none" />
-							</div>
-						</div>
-						<button
-							className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200"
-							type="submit"
-							disabled={loading}
+				{!paymentScreen ? (
+					<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
+						<form
+							onSubmit={onSubmitHandler}
+							className="flex w-full flex-col justify-between gap-6"
 						>
-							Next
-						</button>
-					</form>
-					{error ? <p className="text-rose-500">There was an error</p> : null}
-				</div>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Name</span>
+								<input ref={nameRef} type="text" required />
+							</div>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Age</span>
+								<input ref={ageRef} type="number" min="16" max="100" required />
+							</div>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Gender</span>
+								<select ref={genderRef}>
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+							</div>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Select plan</span>
+								<select ref={planRef} onChange={planChangeHandler}>
+									<option value="1">1 Month - ₹ 1000</option>
+									<option value="4">4 Month - ₹ 3000</option>
+									<option value="6">6 Month - ₹ 5000</option>
+									<option value="12">12 Month - ₹ 8000</option>
+								</select>
+							</div>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Health Issues</span>
+								<div className="flex w-full items-center gap-4">
+									<input ref={healthIssuesCheckboxRef} type="checkbox" />
+									<textarea ref={healthIssuesRef} className="resize-none" />
+								</div>
+							</div>
+							<button
+								className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200"
+								type="submit"
+								disabled={loading}
+							>
+								Next
+							</button>
+						</form>
+						{error ? <p className="text-rose-500">There was an error</p> : null}
+					</div>
+				) : (
+					""
+				)}
 
-				<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
-					<form
-						onSubmit={onSubmitHandler}
-						className="flex w-full flex-col justify-between gap-6"
-					>
-						<div className={inputWrapperClasses}>
-							<span className={spanClasses}>Method</span>
-							<select ref={paymentMethodRef} onChange={paymentChangeHandler}>
-								<option value="Cash">Cash</option>
-								<option value="Card">Card</option>
-								<option value="Wallet">Wallet</option>
-							</select>
-						</div>
-						{renderForm}
-						<button className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200">
-							Pay
-						</button>
-					</form>
-				</div>
+				{paymentScreen ? (
+					<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
+						<form
+							onSubmit={onSubmitHandler}
+							className="flex w-full flex-col justify-between gap-6"
+						>
+							<div className={inputWrapperClasses}>
+								<span className={spanClasses}>Method</span>
+								<select ref={paymentMethodRef} onChange={paymentChangeHandler}>
+									<option value="Cash">Cash</option>
+									<option value="Card">Card</option>
+								</select>
+							</div>
+							{renderForm}
+							<button className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200">
+								Pay
+							</button>
+						</form>
+					</div>
+				) : (
+					""
+				)}
 			</div>
 		</div>
 	);
