@@ -5,27 +5,7 @@ import TbPayment from "./TbPayment";
 import { useAuth } from "../../store/AuthContext";
 
 export default function PaymentPanel() {
-	const [allPayments, setAllPayments] = useState([]);
-	const { initialPaymentsFetched, setInitialPaymentsFetched } = useAuth();
-
-	useEffect(() => {
-		if (!initialPaymentsFetched) {
-			if (allPayments.length > 0) {
-				return;
-			}
-			console.log("request dispatched");
-			async function fetchPayments() {
-				const querySnapshot = await getDocs(collection(db, "payment"));
-				querySnapshot.forEach((doc) => {
-					setAllPayments((prevState) => {
-						return [...prevState, doc.data()];
-					});
-				});
-				setInitialPaymentsFetched(true);
-			}
-			fetchPayments();
-		}
-	});
+	const { allPayments, allMembers } = useAuth();
 
 	return (
 		<div className="h-full w-full bg-white p-4 shadow-md">
@@ -40,7 +20,16 @@ export default function PaymentPanel() {
 						</tr>
 					</thead>
 					<tbody>
-						<TbPayment
+						{allPayments.map((payment) => {
+							return (
+								<TbPayment
+									key={payment.id}
+									members={allMembers}
+									payment={payment}
+								/>
+							);
+						})}
+						{/* <TbPayment
 							name={"Simarjeet Singh"}
 							paymentDate={"12 Dec 2021"}
 							amount={"1000"}
@@ -51,7 +40,7 @@ export default function PaymentPanel() {
 							paymentDate={"5 Dec 2021"}
 							amount={"8000"}
 							subscription={12}
-						/>
+						/> */}
 					</tbody>
 				</table>
 			</div>

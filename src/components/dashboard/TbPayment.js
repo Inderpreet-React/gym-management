@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function TbPayment(props) {
+	console.log(props.members, props.payment);
 	return (
 		<tr className="py-4">
 			<td>{props.name}</td>
