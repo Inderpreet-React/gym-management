@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useDispatch } from "react-redux";
-import { login } from "../store/authSlice";
 
 function LoginForm(props) {
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 	const [loading, isLoading] = useState(false);
@@ -27,7 +26,7 @@ function LoginForm(props) {
 		)
 			.then((userCredentials) => {
 				console.log(userCredentials.user);
-				dispatch(login(userCredentials.user));
+				// dispatch(login(userCredentials.user));
 				navigate("/dashboard");
 				isLoading(false);
 			})
