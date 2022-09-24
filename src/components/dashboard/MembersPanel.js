@@ -1,7 +1,10 @@
 import React from "react";
-import Tb from "./Tb";
+import TdMember from "./TdMember";
+import { useAuth } from "../../store/AuthContext";
 
 export default function MembersPanel() {
+	const { allMembers } = useAuth();
+
 	return (
 		<div className="h-full w-full bg-white p-4 shadow-md">
 			<div className="h-full w-full overflow-hidden rounded border-2 border-indigo-400 p-2">
@@ -15,12 +18,12 @@ export default function MembersPanel() {
 						</tr>
 					</thead>
 					<tbody>
-						<Tb
+						<TdMember
 							name={"Simarjeet Singh"}
 							startingDate={"12 Dec 2021"}
 							endingDate={"12 Jan 2022"}
 						/>
-						<Tb
+						<TdMember
 							name={"Ayush"}
 							startingDate={"22 Dec 2021"}
 							endingDate={"22 March 2022"}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Tb(props) {
+export default function TdMember(props) {
 	return (
 		<tr>
 			<td>{props.name}</td>

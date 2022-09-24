@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import TbPayment from "./TbPayment";
+import TdPayment from "./TdPayment";
 import { useAuth } from "../../store/AuthContext";
 
 export default function PaymentPanel() {
@@ -23,7 +23,7 @@ export default function PaymentPanel() {
 					</thead>
 					<tbody className="text-gray-700">
 						{allPayments.map((payment) => {
-							return <TbPayment key={payment.id} payment={payment} />;
+							return <TdPayment key={payment.id} payment={payment} />;
 						})}
 					</tbody>
 				</table>
