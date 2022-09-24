@@ -12,6 +12,7 @@ export default function AuthContextProvider(props) {
 	const [allPayments, setAllPayments] = useState([]);
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
+	const dateFormat = { year: "numeric", month: "short", day: "numeric" };
 
 	async function fetchPayments() {
 		const q = query(collection(db, "payment"), orderBy("date", "desc"));
@@ -61,6 +62,7 @@ export default function AuthContextProvider(props) {
 		allPayments,
 		allMembers,
 		memberId,
+		dateFormat,
 	};
 
 	return (

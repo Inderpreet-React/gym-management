@@ -78,7 +78,7 @@ export default function NewMemberPanel() {
 		const name = nameRef.current.value;
 		const age = ageRef.current.value;
 		const gender = genderRef.current.value;
-		const plan = planRef.current.value;
+		const plan = parseInt(planRef.current.value);
 		const healthIssuesCheckBox = healthIssuesCheckboxRef.current.checked;
 		const healthIssue = healthIssuesRef.current.value;
 		const currentDate = new Date();
@@ -91,7 +91,7 @@ export default function NewMemberPanel() {
 				age: parseInt(age.trim()),
 				gender: gender,
 				healthHistory: healthIssue.trim(),
-				currentSubscriptionPlan: parseInt(plan),
+				currentSubscriptionPlan: plan,
 				joiningDate: Timestamp.now(),
 				currentPlanStartingDate: Timestamp.now(),
 				currentPlanEndingDate: Timestamp.fromDate(
