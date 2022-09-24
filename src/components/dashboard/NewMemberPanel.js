@@ -154,9 +154,11 @@ export default function NewMemberPanel() {
 			const subscriptionBought = parseInt(planState);
 			const transactionId = transactionIdRef.current.value;
 			const recipt = reciptNoRef.current.value;
+			const date = Timestamp.now();
 			const paymentPayload = {
 				mode: "Card",
 				bank: bank.trim(),
+				date: date,
 				cardType: card,
 				transactionId: transactionId.trim(),
 				reciptNo: recipt,

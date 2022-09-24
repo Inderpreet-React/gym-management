@@ -1,13 +1,30 @@
 import React from "react";
+import { useAuth } from "../../store/AuthContext";
 
 export default function TbPayment(props) {
-	console.log(props.members, props.payment);
+	const { memberId } = useAuth();
+	const memberName = memberId[props.payment.member];
+	const date = props.payment.date.toDate();
+	const amount = props.payment.amount;
+	const subscriptionBought = props.payment.subscriptionBought;
+	const reciptNo = props.payment.reciptNo;
+	const mode = props.payment.mode;
+
+	const tdClassName = "py-2";
 	return (
-		<tr className="py-4">
-			<td>{props.name}</td>
-			<td>{props.paymentDate}</td>
-			<td>{props.amount}</td>
-			<td>{props.subscription}</td>
+		<tr className="odd:bg-gray-200 even:bg-gray-100">
+			<td className={tdClassName}>{memberName}</td>
+			<td
+				className={tdClassName}
+			>{`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}</td>
+			<td className={tdClassName}>{`₹ ${amount}/-`}</td>
+			<td className={tdClassName}>{`${subscriptionBought} months`}</td>
+			<td className={tdClassName}>{reciptNo}</td>
+			<td className={tdClassName}>
+				{mode === "Cash"
+					? mode
+					: `${props.payment.bank} ${props.payment.cardType}`}
+			</td>
 		</tr>
 	);
 }

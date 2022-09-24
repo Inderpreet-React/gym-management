@@ -5,42 +5,26 @@ import TbPayment from "./TbPayment";
 import { useAuth } from "../../store/AuthContext";
 
 export default function PaymentPanel() {
-	const { allPayments, allMembers } = useAuth();
+	const { allPayments } = useAuth();
 
 	return (
 		<div className="h-full w-full bg-white p-4 shadow-md">
 			<div className="h-full w-full overflow-hidden rounded border-2 border-indigo-400 p-2">
-				<table className="w-full  text-center text-lg">
-					<thead className="h-4 w-full rounded-t bg-gray-400  py-4 text-white">
-						<tr className="">
-							<th>Name</th>
+				<table className="w-full table-auto overflow-hidden rounded text-center text-lg">
+					<thead className="h-4 w-full  bg-indigo-500  py-4 uppercase text-white">
+						<tr>
+							<th className="py-2">Name</th>
 							<th>Date</th>
 							<th>Amount</th>
 							<th>Subscription</th>
+							<th>Recipt No.</th>
+							<th>Payment Mode</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody className="text-gray-700">
 						{allPayments.map((payment) => {
-							return (
-								<TbPayment
-									key={payment.id}
-									members={allMembers}
-									payment={payment}
-								/>
-							);
+							return <TbPayment key={payment.id} payment={payment} />;
 						})}
-						{/* <TbPayment
-							name={"Simarjeet Singh"}
-							paymentDate={"12 Dec 2021"}
-							amount={"1000"}
-							subscription={1}
-						/>
-						<TbPayment
-							name={"Ayush"}
-							paymentDate={"5 Dec 2021"}
-							amount={"8000"}
-							subscription={12}
-						/> */}
 					</tbody>
 				</table>
 			</div>

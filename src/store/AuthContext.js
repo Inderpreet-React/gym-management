@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -11,12 +11,16 @@ export default function AuthContextProvider(props) {
 	const [initialLoad, setInitialLoad] = useState(false);
 	const [allPayments, setAllPayments] = useState([]);
 	const [allMembers, setAllMembers] = useState([]);
+	const [memberId, setMemberId] = useState({});
 
 	async function fetchPayments() {
-		const querySnapshot = await getDocs(collection(db, "payment"));
+		const q = query(collection(db, "payment"), orderBy("date", "desc"));
+		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
+			const newData = doc.data();
+			newData["id"] = doc.id;
 			setAllPayments((prevState) => {
-				return [...prevState, doc.data()];
+				return [...prevState, newData];
 			});
 		});
 	}
@@ -24,6 +28,13 @@ export default function AuthContextProvider(props) {
 	async function fetchMembers() {
 		const querySnapshot = await getDocs(collection(db, "members"));
 		querySnapshot.forEach((doc) => {
+			const nameId = doc.id;
+			const name = doc.data().name;
+			setMemberId((prevState) => {
+				const newData = { ...prevState };
+				newData[nameId] = name;
+				return newData;
+			});
 			setAllMembers((prevState) => {
 				return [...prevState, doc.data()];
 			});
@@ -49,6 +60,7 @@ export default function AuthContextProvider(props) {
 	const value = {
 		allPayments,
 		allMembers,
+		memberId,
 	};
 
 	return (
