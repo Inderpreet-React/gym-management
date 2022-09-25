@@ -2,14 +2,23 @@ import React, { useRef, useState } from "react";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import Eren from "../../images/Eren.png";
 import { db } from "../../firebase";
-import { query, where, collection, getDocs } from "firebase/firestore";
+import {
+	query,
+	where,
+	collection,
+	getDocs,
+	doc,
+	getDoc,
+} from "firebase/firestore";
+import { useAuth } from "../../store/AuthContext";
 
 export default function SearchBar() {
 	const [searchResult, setSearchResult] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 	const searchBarRef = useRef();
+	const { setSearchedMember } = useAuth();
 
 	async function searchBarHandler() {
-		// console.log(searchBarRef.current.value);
 		setSearchResult([]);
 		const searchName = searchBarRef.current.value;
 		if (searchName.length >= 3) {
@@ -33,6 +42,36 @@ export default function SearchBar() {
 		}
 	}
 
+	async function updateSearchedMember(e) {
+		if (!isLoading) {
+			try {
+				setIsLoading(true);
+				const id = e.target.getAttribute("data-id");
+				const docRef = doc(db, "members", id);
+				console.log("user request send");
+				const docSnap = await getDoc(docRef);
+				const newData = {
+					id: id,
+					name: docSnap.data().name,
+					age: docSnap.data().age,
+					gender: docSnap.data().gender,
+					joiningDate: docSnap.data().joiningDate,
+					plan: docSnap.data().currentSubscriptionPlan,
+					currentPlanStartingDate: docSnap.data().currentPlanStartingDate,
+					currentPlanEndingDate: docSnap.data().currentPlanEndingDate,
+					healthIssue: docSnap.data().healthHistory,
+				};
+
+				setSearchedMember(newData);
+			} catch (e) {
+				console.log(e.code, e.message);
+			} finally {
+				setIsLoading(false);
+				setSearchResult([]);
+			}
+		}
+	}
+
 	return (
 		<div className="relative shadow-md">
 			<div className="flex h-14 w-full">
@@ -52,7 +91,12 @@ export default function SearchBar() {
 				<ul className="absolute z-10 flex w-5/6 flex-col gap-4 bg-green-500 p-4">
 					{searchResult.map((result) => {
 						return (
-							<li key={result.id}>
+							<li
+								className={isLoading ? "cursor-wait" : "cursor-pointer"}
+								onClick={updateSearchedMember}
+								key={result.id}
+								data-id={result.id}
+							>
 								{result.id} {result.name}
 							</li>
 						);
