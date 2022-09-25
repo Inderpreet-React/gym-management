@@ -82,15 +82,21 @@ export default function NewMemberPanel() {
 		const healthIssuesCheckBox = healthIssuesCheckboxRef.current.checked;
 		const healthIssue = healthIssuesRef.current.value;
 		const currentDate = new Date();
+		const search = [];
+		const n = name.length + 1;
+		for (let i = 1; i < n; i++) {
+			search.push(name.trim().toLowerCase().slice(0, i));
+		}
 
 		if (healthIssuesCheckBox) {
 			setPlanAmountState(planAmounts[plan]);
 			setPaymentScreen(true);
 			setUserPayload({
-				name: name.trim(),
+				name: name.trim().toLowerCase(),
 				age: parseInt(age.trim()),
 				gender: gender,
 				healthHistory: healthIssue.trim(),
+				search: search,
 				currentSubscriptionPlan: plan,
 				joiningDate: Timestamp.now(),
 				currentPlanStartingDate: Timestamp.now(),
@@ -103,10 +109,11 @@ export default function NewMemberPanel() {
 			setPlanAmountState(planAmounts[plan]);
 			setPaymentScreen(true);
 			setUserPayload({
-				name: name.trim(),
+				name: name.trim().toLowerCase(),
 				age: parseInt(age.trim()),
 				gender: gender,
 				healthHistory: null,
+				search: search,
 				currentSubscriptionPlan: parseInt(plan),
 				joiningDate: Timestamp.now(),
 				currentPlanStartingDate: Timestamp.now(),
@@ -238,7 +245,12 @@ export default function NewMemberPanel() {
 						>
 							<div className={inputWrapperClasses}>
 								<span className={spanClasses}>Name</span>
-								<input ref={nameRef} type="text" required />
+								<input
+									className="capitalize"
+									ref={nameRef}
+									type="text"
+									required
+								/>
 							</div>
 							<div className={inputWrapperClasses}>
 								<span className={spanClasses}>Age</span>

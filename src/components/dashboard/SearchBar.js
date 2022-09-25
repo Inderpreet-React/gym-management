@@ -7,11 +7,12 @@ import { query, where, collection, getDocs } from "firebase/firestore";
 export default function SearchBar() {
 	const [searchResult, setSearchResult] = useState([]);
 	const searchBarRef = useRef();
+
 	async function searchBarHandler() {
 		// console.log(searchBarRef.current.value);
+		setSearchResult([]);
 		const searchName = searchBarRef.current.value;
-		if (searchName.length > 0) {
-			setSearchResult([]);
+		if (searchName.length >= 3) {
 			console.log("Request send", searchName);
 			const collectionRef = collection(db, "members");
 			const q = query(
