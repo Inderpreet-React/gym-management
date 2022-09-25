@@ -10,6 +10,7 @@ export function useAuth() {
 export default function AuthContextProvider(props) {
 	const [initialLoad, setInitialLoad] = useState(false);
 	const [searchedMember, setSearchedMember] = useState(false);
+	const [loggedUser, setLoggedUser] = useState(false);
 	const [allPayments, setAllPayments] = useState([]);
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
@@ -66,6 +67,8 @@ export default function AuthContextProvider(props) {
 		dateFormat,
 		searchedMember,
 		setSearchedMember,
+		loggedUser,
+		setLoggedUser,
 	};
 
 	return (

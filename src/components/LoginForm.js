@@ -3,10 +3,10 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useDispatch } from "react-redux";
+import { useAuth } from "../store/AuthContext";
 
 function LoginForm(props) {
-	// const dispatch = useDispatch();
+	const { loggedUser, setLoggedUser } = useAuth();
 	const navigate = useNavigate();
 	const [error, setError] = useState(false);
 	const [loading, isLoading] = useState(false);
@@ -26,13 +26,14 @@ function LoginForm(props) {
 		)
 			.then((userCredentials) => {
 				console.log(userCredentials.user);
-				// dispatch(login(userCredentials.user));
+				setLoggedUser(userCredentials.user);
 				navigate("/dashboard");
-				isLoading(false);
 			})
 			.catch((error) => {
 				console.log(error);
 				setError(error.message);
+			})
+			.finally(() => {
 				isLoading(false);
 			});
 	}

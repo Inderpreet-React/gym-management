@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import Eren from "../../images/Eren.png";
 import { db } from "../../firebase";
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 import {
 	query,
 	where,
@@ -11,12 +13,14 @@ import {
 	getDoc,
 } from "firebase/firestore";
 import { useAuth } from "../../store/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
 	const [searchResult, setSearchResult] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const searchBarRef = useRef();
-	const { setSearchedMember } = useAuth();
+	const { setSearchedMember, setLoggedUser } = useAuth();
+	const navigate = useNavigate();
 
 	async function searchBarHandler() {
 		setSearchResult([]);
@@ -72,6 +76,18 @@ export default function SearchBar() {
 		}
 	}
 
+	function signOutHandler() {
+		signOut(auth)
+			.then(() => {
+				setLoggedUser(false);
+				console.log("logout sucess");
+				navigate("/");
+			})
+			.catch((e) => {
+				console.log("Oh no!");
+			});
+	}
+
 	return (
 		<div className="relative shadow-md">
 			<div className="flex h-14 w-full">
@@ -83,7 +99,10 @@ export default function SearchBar() {
 					type="text"
 				/>
 				<div className="flex h-full w-1/6 items-center justify-evenly bg-white  px-4">
-					<ArrowLeftOnRectangleIcon className="h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500" />
+					<ArrowLeftOnRectangleIcon
+						onClick={signOutHandler}
+						className="h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500"
+					/>
 					<img src={Eren} alt="Profile" className="h-10 w-10 rounded-full" />
 				</div>
 			</div>
