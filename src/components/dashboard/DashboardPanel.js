@@ -1,6 +1,7 @@
 import React from "react";
 import ExerciseSvg from "../../images/ExerciseSvg.svg";
 import { useAuth } from "../../store/AuthContext";
+import UpdateSubscriptionForm from "./UpdateSubscriptionForm";
 
 export default function DashboardPanel() {
 	const { searchedMember, dateFormat } = useAuth();
@@ -43,7 +44,7 @@ export default function DashboardPanel() {
 						</h3>
 					</>
 				) : (
-					<div className="flex gap-4">
+					<div className="flex gap-4 divide-x-2 divide-gray-400">
 						<table className="w-1/2 text-left text-lg">
 							<tbody>
 								<tr>
@@ -91,9 +92,7 @@ export default function DashboardPanel() {
 								</tr>
 							</tbody>
 						</table>
-						<form className="p-4">
-							<span>Form</span>
-						</form>
+						<UpdateSubscriptionForm />
 					</div>
 				)}
 			</div>
