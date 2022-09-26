@@ -11,6 +11,7 @@ export function useAuth() {
 
 export default function AuthContextProvider(props) {
 	const [initialLoad, setInitialLoad] = useState(false);
+	const [globalLoading, setGlobalLoading] = useState(false);
 	const [searchedMember, setSearchedMember] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(false);
 	const [allPayments, setAllPayments] = useState([]);
@@ -46,6 +47,7 @@ export default function AuthContextProvider(props) {
 				return [...prevState, newData];
 			});
 		});
+		setGlobalLoading(false);
 	}
 
 	async function fetchMembers() {
@@ -65,6 +67,7 @@ export default function AuthContextProvider(props) {
 	}
 
 	function initialDataFetch() {
+		setGlobalLoading(true);
 		fetchMembers();
 		fetchPayments();
 		setInitialLoad(true);
@@ -89,6 +92,7 @@ export default function AuthContextProvider(props) {
 		setSearchedMember,
 		loggedUser,
 		setLoggedUser,
+		globalLoading,
 	};
 
 	return (
