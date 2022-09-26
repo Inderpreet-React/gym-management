@@ -58,7 +58,9 @@ function LoginForm(props) {
 						<button
 							type="submit"
 							disabled={loading}
-							className="mt-4 self-end rounded bg-indigo-500 px-6 py-2 text-white hover:bg-indigo-700 focus:ring-1 focus:ring-indigo-500 focus:ring-offset-2"
+							className={`mt-4 self-end rounded bg-indigo-500 px-6 py-2 text-white hover:bg-indigo-700 focus:ring-1 focus:ring-indigo-500 focus:ring-offset-2 ${
+								loading ? "cursor-wait" : ""
+							}`}
 						>
 							Log In
 						</button>
