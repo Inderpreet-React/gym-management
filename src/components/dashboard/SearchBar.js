@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 export default function SearchBar() {
 	const [searchResult, setSearchResult] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [loggingOut, setLoggingOut] = useState(false);
 	const searchBarRef = useRef();
 	const { setSearchedMember, setLoggedUser } = useAuth();
 	const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function SearchBar() {
 	async function searchBarHandler() {
 		setSearchResult([]);
 		const searchName = searchBarRef.current.value;
-		if (searchName.length >= 3) {
+		if (searchName.length >= 1) {
 			console.log("Request send", searchName);
 			const collectionRef = collection(db, "members");
 			const q = query(
@@ -77,15 +78,21 @@ export default function SearchBar() {
 	}
 
 	function signOutHandler() {
-		signOut(auth)
-			.then(() => {
-				setLoggedUser(false);
-				console.log("logout sucess");
-				navigate("/");
-			})
-			.catch((e) => {
-				console.log("Oh no!");
-			});
+		if (!loggingOut) {
+			setLoggingOut(true);
+			signOut(auth)
+				.then(() => {
+					setLoggedUser(false);
+					console.log("logout sucess");
+					navigate("/");
+				})
+				.catch((e) => {
+					console.log("Oh no!");
+				})
+				.finally(() => {
+					setLoggingOut(false);
+				});
+		}
 	}
 
 	return (
@@ -101,7 +108,9 @@ export default function SearchBar() {
 				<div className="flex h-full w-1/6 items-center justify-evenly bg-white  px-4">
 					<ArrowLeftOnRectangleIcon
 						onClick={signOutHandler}
-						className="h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500"
+						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 ${
+							loggingOut ? "cursor-wait" : ""
+						}`}
 					/>
 					<img src={Eren} alt="Profile" className="h-10 w-10 rounded-full" />
 				</div>

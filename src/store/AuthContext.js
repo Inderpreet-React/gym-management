@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { db } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 const AuthContext = React.createContext();
 
@@ -15,6 +17,24 @@ export default function AuthContextProvider(props) {
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
 	const dateFormat = { year: "numeric", month: "short", day: "numeric" };
+
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			// User is signed in, see docs for a list of available properties
+			// https://firebase.google.com/docs/reference/js/firebase.User
+			setLoggedUser(user);
+			// ...
+		} else {
+			// User is signed out
+			// ...
+			setLoggedUser(false);
+			setSearchedMember(false);
+			setAllPayments([]);
+			setAllMembers([]);
+			setInitialLoad(false);
+			setMemberId({});
+		}
+	});
 
 	async function fetchPayments() {
 		const q = query(collection(db, "payment"), orderBy("date", "desc"));
@@ -51,14 +71,14 @@ export default function AuthContextProvider(props) {
 	}
 
 	useEffect(() => {
-		if (!initialLoad) {
+		if (!initialLoad && loggedUser) {
 			if (allMembers.length > 0) {
 				return;
 			}
 			console.log("Initial data request dispatched");
 			initialDataFetch();
 		}
-	});
+	}, [loggedUser]);
 
 	const value = {
 		allPayments,
