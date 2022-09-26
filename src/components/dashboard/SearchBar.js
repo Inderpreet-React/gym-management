@@ -116,16 +116,18 @@ export default function SearchBar() {
 				</div>
 			</div>
 			{searchResult.length > 0 ? (
-				<ul className="absolute z-10 flex w-5/6 flex-col gap-4 bg-green-500 p-4">
+				<ul className="absolute z-10 flex w-5/6 flex-col divide-y-2 divide-gray-200 rounded-b-md bg-indigo-500 p-4 text-white">
 					{searchResult.map((result) => {
 						return (
 							<li
-								className={isLoading ? "cursor-wait" : "cursor-pointer"}
+								className={`flex min-w-max items-center gap-4 px-2 py-3 capitalize hover:bg-indigo-600 ${
+									isLoading ? "cursor-wait" : "cursor-pointer"
+								}`}
 								onClick={updateSearchedMember}
 								key={result.id}
 								data-id={result.id}
 							>
-								{result.id} {result.name}
+								{result.name} | {result.age} | {result.gender}
 							</li>
 						);
 					})}
