@@ -13,7 +13,7 @@ export default function TbPayment(props) {
 	const tdClassName = "py-2";
 	return (
 		<tr className="odd:bg-gray-200 even:bg-gray-100">
-			<td className={tdClassName}>{memberName}</td>
+			<td className={`${tdClassName} capitalize`}>{memberName}</td>
 			<td className={tdClassName}>
 				{date.toLocaleString("en-IN", dateFormat)}
 			</td>
