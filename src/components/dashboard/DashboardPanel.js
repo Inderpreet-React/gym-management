@@ -94,7 +94,10 @@ export default function DashboardPanel() {
 								</tr>
 							</tbody>
 						</table>
-						<UpdateSubscriptionForm id={id} />
+						<UpdateSubscriptionForm
+							id={id}
+							currentPlanEndingDate={currentPlanEndingDate}
+						/>
 					</div>
 				)}
 			</div>

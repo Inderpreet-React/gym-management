@@ -1,6 +1,9 @@
-import { Timestamp } from "firebase/firestore";
+import { collection, Timestamp } from "firebase/firestore";
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../store/AuthContext";
+import { db } from "../../firebase";
+import { doc, setDoc, addDoc } from "firebase/firestore";
+import { async } from "@firebase/util";
 
 export default function UpdateSubscriptionForm(props) {
 	const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -20,38 +23,53 @@ export default function UpdateSubscriptionForm(props) {
 		setPaymentMethod(paymentMethodRef.current.value);
 	}
 
+	async function updateUserData(id, payload) {
+		return await setDoc(doc(db, "members", id), payload, { merge: true });
+	}
+
+	async function createPaymentData(payload) {
+		return await addDoc(collection(db, "payment"), payload);
+	}
+
 	function planUpdateHandler(e) {
 		e.preventDefault();
+
 		const userPayload = {};
 		const paymentPayload = {};
 		const plan = parseInt(updatePlanRef.current.value);
 		const planAmount = parseInt(planAmounts[updatePlanRef.current.value]);
 		const currentDate = new Date();
-		let payloadPlanStartingDate = props.currentPlanEndingDate;
-		let payloadEndingDate = Timestamp.fromDate(
-			props.currentPlanEndingDate
-		).toDate();
+		let payloadPlanStartingDate = new Date(
+			props.currentPlanEndingDate.getTime()
+		);
+		let payloadEndingDate = new Date(props.currentPlanEndingDate.getTime());
 		const reciptNo = reciptNoRef.current.value;
+		console.log(payloadEndingDate, payloadPlanStartingDate);
 
 		if (payloadEndingDate.getTime() > currentDate.getTime()) {
 			payloadEndingDate = new Date(
 				payloadEndingDate.setMonth(payloadEndingDate.getMonth() + plan)
 			);
+			console.log("Value greater");
 		} else {
-			payloadPlanStartingDate = Timestamp.now().toDate();
+			payloadPlanStartingDate = new Date();
 			payloadEndingDate = new Date(
 				currentDate.setMonth(currentDate.getMonth() + plan)
 			);
+			console.log("value smaller");
 		}
 
-		userPayload["currentPlanEndingDate"] = payloadEndingDate;
+		userPayload["currentPlanEndingDate"] =
+			Timestamp.fromDate(payloadEndingDate);
 		userPayload["currentSubscriptionPlan"] = plan;
-		userPayload["currentPlanStartingDate"] = payloadPlanStartingDate;
+		userPayload["currentPlanStartingDate"] = Timestamp.fromDate(
+			payloadPlanStartingDate
+		);
 
 		paymentPayload["amount"] = planAmount;
 		paymentPayload["subscriptionBought"] = plan;
 		paymentPayload["reciptNo"] = reciptNo;
-		paymentPayload["date"] = Timestamp.now().toDate();
+		paymentPayload["date"] = Timestamp.now();
 		paymentPayload["member"] = id;
 		paymentPayload["mode"] = paymentMethod;
 
@@ -62,7 +80,12 @@ export default function UpdateSubscriptionForm(props) {
 		}
 
 		console.log(userPayload, paymentPayload);
+
+		const user = updateUserData(id, userPayload);
+		const payment = createPaymentData(paymentPayload);
+		console.log(user, payment);
 	}
+
 	return (
 		<form
 			onSubmit={planUpdateHandler}
