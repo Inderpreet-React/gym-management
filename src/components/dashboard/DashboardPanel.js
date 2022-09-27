@@ -14,6 +14,7 @@ export default function DashboardPanel() {
 	let currentPlanStartingDate = "Feb 12, 2019";
 	let currentPlanEndingDate = "June 12, 2019";
 	let healthIssue = "Nothing";
+	let id = null;
 
 	if (searchedMember) {
 		name = searchedMember.name;
@@ -24,6 +25,7 @@ export default function DashboardPanel() {
 		currentPlanStartingDate = searchedMember.currentPlanStartingDate.toDate();
 		currentPlanEndingDate = searchedMember.currentPlanEndingDate.toDate();
 		healthIssue = searchedMember.healthIssue;
+		id = searchedMember.id;
 	}
 
 	const thClass = "py-3 pl-4 bg-gray-200 w-1/2";
@@ -44,7 +46,7 @@ export default function DashboardPanel() {
 						</h3>
 					</>
 				) : (
-					<div className="flex gap-4 divide-x-2 divide-gray-400">
+					<div className="flex h-full gap-4 divide-x-2 divide-gray-400">
 						<table className="w-1/2 text-left text-lg">
 							<tbody>
 								<tr>
@@ -92,7 +94,7 @@ export default function DashboardPanel() {
 								</tr>
 							</tbody>
 						</table>
-						<UpdateSubscriptionForm />
+						<UpdateSubscriptionForm id={id} />
 					</div>
 				)}
 			</div>

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useAuth } from "../../store/AuthContext";
 import FormSvg from "../../images/FormSvg.svg";
 import { db } from "../../firebase";
 import {
@@ -22,13 +23,7 @@ export default function NewMemberPanel() {
 	const [planState, setPlanState] = useState(1);
 	const [userPayload, setUserPayload] = useState({});
 	const [healthCheckBox, setHealthCheckBox] = useState(false);
-
-	const planAmounts = {
-		1: 1000,
-		4: 3000,
-		6: 5000,
-		12: 8000,
-	};
+	const { planAmounts } = useAuth();
 
 	// Refs
 	const nameRef = useRef();

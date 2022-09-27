@@ -18,6 +18,12 @@ export default function AuthContextProvider(props) {
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
 	const dateFormat = { year: "numeric", month: "short", day: "numeric" };
+	const planAmounts = {
+		1: 1000,
+		4: 3000,
+		6: 5000,
+		12: 8000,
+	};
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
@@ -93,6 +99,7 @@ export default function AuthContextProvider(props) {
 		loggedUser,
 		setLoggedUser,
 		globalLoading,
+		planAmounts,
 	};
 
 	return (
