@@ -7,6 +7,7 @@ import { async } from "@firebase/util";
 
 export default function UpdateSubscriptionForm(props) {
 	const [paymentMethod, setPaymentMethod] = useState("Cash");
+	const [loading, setLoading] = useState(false);
 	const paymentMethodRef = useRef();
 	const updatePlanRef = useRef();
 	const reciptNoRef = useRef();
@@ -24,11 +25,12 @@ export default function UpdateSubscriptionForm(props) {
 	}
 
 	async function updateUserData(id, payload) {
-		return await setDoc(doc(db, "members", id), payload, { merge: true });
+		await setDoc(doc(db, "members", id), payload, { merge: true });
 	}
 
 	async function createPaymentData(payload) {
-		return await addDoc(collection(db, "payment"), payload);
+		await addDoc(collection(db, "payment"), payload);
+		setLoading(false);
 	}
 
 	function planUpdateHandler(e) {
@@ -80,7 +82,7 @@ export default function UpdateSubscriptionForm(props) {
 		}
 
 		console.log(userPayload, paymentPayload);
-
+		setLoading(true);
 		const user = updateUserData(id, userPayload);
 		const payment = createPaymentData(paymentPayload);
 		console.log(user, payment);
@@ -136,6 +138,7 @@ export default function UpdateSubscriptionForm(props) {
 			<button
 				className="self-end rounded bg-indigo-500 py-2 px-8 text-white disabled:cursor-wait disabled:bg-indigo-600 disabled:text-slate-200"
 				type="submit"
+				disabled={loading}
 			>
 				Update
 			</button>
