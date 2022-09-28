@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import Eren from "../../images/Eren.png";
 import { db } from "../../firebase";
@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../store/AuthContext";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 export default function SearchBar() {
 	const [searchResult, setSearchResult] = useState([]);
@@ -46,6 +47,17 @@ export default function SearchBar() {
 			setSearchResult([]);
 		}
 	}
+
+	const debouncedSearchBarHandler = useMemo(
+		() => debounce(searchBarHandler, 300),
+		[]
+	);
+
+	useEffect(() => {
+		return () => {
+			debouncedSearchBarHandler.cancel();
+		};
+	}, [searchResult]);
 
 	async function updateSearchedMember(e) {
 		if (!isLoading) {
@@ -100,7 +112,7 @@ export default function SearchBar() {
 			<div className="flex h-14 w-full">
 				<input
 					ref={searchBarRef}
-					onChange={searchBarHandler}
+					onChange={debouncedSearchBarHandler}
 					placeholder={"Search"}
 					className="text h-full w-5/6 rounded-none border-none focus:ring-0"
 					type="text"
