@@ -9,7 +9,7 @@ export default function DashboardPanel() {
 	let name = "Simarjeet Singh";
 	let age = 23;
 	let gender = "Male";
-	let joinedOn = "Jan 12, 2019";
+	let joiningDate = "Jan 12, 2019";
 	let plan = 4;
 	let currentPlanStartingDate = "Feb 12, 2019";
 	let currentPlanEndingDate = "June 12, 2019";
@@ -20,10 +20,10 @@ export default function DashboardPanel() {
 		name = searchedMember.name;
 		age = searchedMember.age;
 		gender = searchedMember.gender;
-		joinedOn = searchedMember.joiningDate.toDate();
 		plan = searchedMember.plan;
 		currentPlanStartingDate = searchedMember.currentPlanStartingDate.toDate();
 		currentPlanEndingDate = searchedMember.currentPlanEndingDate.toDate();
+		joiningDate = searchedMember.joiningDate.toDate();
 		healthIssue = searchedMember.healthIssue;
 		id = searchedMember.id;
 	}
@@ -64,7 +64,7 @@ export default function DashboardPanel() {
 								<tr>
 									<th className={thClass}>Joined on</th>
 									<td className={tdClass}>
-										{joinedOn.toLocaleString("en-IN", dateFormat)}
+										{joiningDate.toLocaleString("en-IN", dateFormat)}
 									</td>
 								</tr>
 								<tr>

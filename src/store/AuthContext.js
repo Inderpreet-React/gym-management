@@ -2,7 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {
+	collection,
+	getDocs,
+	query,
+	orderBy,
+	doc,
+	getDoc,
+} from "firebase/firestore";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -14,6 +21,7 @@ export default function AuthContextProvider(props) {
 	const [globalLoading, setGlobalLoading] = useState(false);
 	const [searchedMember, setSearchedMember] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(false);
+	const [refresh, setRefresh] = useState(false);
 	const [allPayments, setAllPayments] = useState([]);
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
@@ -46,6 +54,7 @@ export default function AuthContextProvider(props) {
 	async function fetchPayments() {
 		const q = query(collection(db, "payment"), orderBy("date", "desc"));
 		const querySnapshot = await getDocs(q);
+		setAllPayments([]);
 		querySnapshot.forEach((doc) => {
 			const newData = doc.data();
 			newData["id"] = doc.id;
@@ -54,10 +63,12 @@ export default function AuthContextProvider(props) {
 			});
 		});
 		setGlobalLoading(false);
+		setRefresh(false);
 	}
 
 	async function fetchMembers() {
 		const querySnapshot = await getDocs(collection(db, "members"));
+		setAllMembers([]);
 		querySnapshot.forEach((doc) => {
 			const nameId = doc.id;
 			const name = doc.data().name;
@@ -77,6 +88,13 @@ export default function AuthContextProvider(props) {
 		fetchMembers();
 		fetchPayments();
 		setInitialLoad(true);
+	}
+
+	function refreshData(id) {
+		setRefresh(true);
+		console.log("refreshing");
+		fetchMembers();
+		fetchPayments();
 	}
 
 	useEffect(() => {
@@ -100,6 +118,8 @@ export default function AuthContextProvider(props) {
 		setLoggedUser,
 		globalLoading,
 		planAmounts,
+		refresh,
+		refreshData,
 	};
 
 	return (
