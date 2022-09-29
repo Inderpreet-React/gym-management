@@ -9,8 +9,8 @@ export default function PaymentPanel() {
 
 	return (
 		<div className="h-full w-full bg-white p-4 shadow-md">
-			<div className="h-full w-full overflow-hidden rounded border-2 border-indigo-400 p-2">
-				<table className="w-full table-auto overflow-hidden rounded text-center text-lg">
+			<div className="h-[90%] w-full overflow-auto rounded border-2 border-indigo-400 p-2">
+				<table className="h-full w-full table-auto overflow-hidden rounded text-center text-lg">
 					<thead className="h-4 w-full  bg-indigo-500  py-4 uppercase text-white">
 						<tr>
 							<th className="py-2">Name</th>
@@ -21,7 +21,7 @@ export default function PaymentPanel() {
 							<th>Payment Mode</th>
 						</tr>
 					</thead>
-					<tbody className="text-gray-700">
+					<tbody className="container h-20 overflow-y-auto text-gray-700">
 						{allPayments.map((payment) => {
 							return <TdPayment key={payment.id} payment={payment} />;
 						})}
