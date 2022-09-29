@@ -10,7 +10,7 @@ export default function TbPayment(props) {
 	const reciptNo = props.payment.reciptNo;
 	const mode = props.payment.mode;
 
-	const tdClassName = "py-2";
+	const tdClassName = "py-2 px-4 md:px-0 whitespace-nowrap";
 	return (
 		<tr className="odd:bg-gray-200 even:bg-gray-100">
 			<td className={`${tdClassName} capitalize`}>{memberName}</td>
