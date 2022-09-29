@@ -39,8 +39,9 @@ export default function NewMemberPanel() {
 	const transactionIdRef = useRef();
 
 	// Classes
-	const spanClasses = "w-1/3";
-	const inputWrapperClasses = "flex items-center gap-4 text-gray-600";
+	const spanClasses = "w-full md:w-1/3";
+	const inputWrapperClasses =
+		"flex flex-col md:flex-row items-center gap-4 text-gray-600";
 	let renderForm = null;
 
 	// Functions
@@ -226,14 +227,14 @@ export default function NewMemberPanel() {
 				<img
 					src={FormSvg}
 					alt="form svg"
-					className="absolute right-0 top-1/4 -z-10 h-96 w-96"
+					className="absolute right-0 top-1/4 -z-10 h-56 w-56 md:h-96 md:w-96"
 				/>
 				{/* <h1 className="text-center text-2xl font-bold italic text-indigo-600">
 					Add new member form
 				</h1> */}
 
 				{!paymentScreen ? (
-					<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
+					<div className="flex h-full w-full flex-col justify-center rounded md:w-3/4 md:p-4">
 						<form
 							onSubmit={onSubmitHandler}
 							className="flex w-full flex-col justify-between gap-6"
@@ -296,7 +297,7 @@ export default function NewMemberPanel() {
 				)}
 
 				{paymentScreen ? (
-					<div className="flex h-full w-3/4 flex-col justify-center rounded p-4">
+					<div className="flex h-[85vh] w-full flex-col justify-center rounded md:h-full md:w-3/4 md:p-4 ">
 						<form
 							onSubmit={paymentHandler}
 							className="flex w-full flex-col justify-between gap-6"
