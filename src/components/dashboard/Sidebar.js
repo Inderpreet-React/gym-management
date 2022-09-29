@@ -46,7 +46,7 @@ function Sidebar() {
 				<h1 className="w-full text-2xl font-bold text-white lg:absolute lg:top-8 lg:flex">
 					Bruh Gym
 				</h1>
-				<ul className="text-l mt-8 flex w-full cursor-pointer flex-col text-gray-100 sm:h-[80%] sm:justify-evenly md:h-[80%] md:justify-evenly lg:h-56 lg:justify-around">
+				<ul className="text-l mt-8 flex w-full cursor-pointer flex-col text-gray-100 md:h-56 md:justify-around">
 					<NavLink
 						to=""
 						end
