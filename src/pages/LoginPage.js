@@ -5,13 +5,13 @@ import NavBar from "../components/NavBar";
 
 function LoginPage(props) {
 	return (
-		<div className="h-screen">
+		<div className="h-full md:h-screen">
 			<NavBar />
-			<div className="flex h-screen w-full items-center justify-center bg-slate-100">
-				<div className="flex items-center rounded bg-indigo-200 shadow-lg">
+			<div className="flex h-screen w-full items-center justify-center bg-slate-100 md:h-screen">
+				<div className="flex h-full items-center justify-center bg-indigo-200 md:h-min md:rounded md:shadow-lg">
 					<LoginForm />
 					<img
-						className="h-96 w-96"
+						className="hidden h-96 w-96 md:flex"
 						src={AuthenticationSvg}
 						alt="Authentication SVG"
 					></img>

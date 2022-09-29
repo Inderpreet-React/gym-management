@@ -42,8 +42,8 @@ function LoginForm(props) {
 			{loggedUser ? (
 				<Navigate to="/dashboard" replace={true} />
 			) : (
-				<div className="flex flex-col justify-center gap-4  bg-white p-10">
-					<h2 className="text-center text-2xl font-bold text-gray-700">
+				<div className="flex h-full flex-col items-center justify-center gap-4 bg-white p-10">
+					<h2 className="text-center text-xl font-bold text-gray-700 md:text-2xl">
 						Log In to continue
 					</h2>
 					<form
