@@ -120,7 +120,7 @@ export default function SearchBar() {
 				<div className="flex h-full w-1/3 items-center justify-evenly bg-white px-4  md:w-1/6">
 					<ArrowLeftOnRectangleIcon
 						onClick={signOutHandler}
-						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 md:h-10 md:w-10 ${
+						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 md:h-8 md:w-8 ${
 							loggingOut ? "cursor-wait" : ""
 						}`}
 					/>

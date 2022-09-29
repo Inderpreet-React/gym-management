@@ -32,7 +32,7 @@ export default function DashboardPanel() {
 	const tdClass = "pl-6 py-3";
 
 	return (
-		<div className="relative h-full w-full rounded bg-white p-4 shadow-md">
+		<div className="relative h-[90vh] w-full rounded bg-white p-4 shadow-md md:h-full">
 			<div className="flex h-full flex-col rounded border-2 border-indigo-500 p-4 pt-6 text-gray-700 md:p-8 md:pt-8">
 				{!searchedMember ? (
 					<>
