@@ -113,9 +113,9 @@ export default function UpdateSubscriptionForm(props) {
 	return (
 		<form
 			onSubmit={planUpdateHandler}
-			className="flex w-1/2 flex-col gap-4 p-4"
+			className="flex w-full flex-col gap-4 p-2 text-sm md:w-1/2 md:p-4 md:text-lg"
 		>
-			<h1 className="text-center text-lg font-semibold text-gray-500 underline">
+			<h1 className="text-md text-center font-semibold text-gray-500 underline md:text-lg">
 				Update Plan
 			</h1>
 			<div className={inputWrapperClasses}>

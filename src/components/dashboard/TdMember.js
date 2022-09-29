@@ -9,7 +9,7 @@ export default function TdMember(props) {
 	const currentSubscriptionPlan = props.member.currentSubscriptionPlan;
 
 	const { dateFormat } = useAuth();
-	const tdClassName = "py-2";
+	const tdClassName = "px-4 py-2 whitespace-nowrap md:p-0 md:py-2";
 
 	return (
 		<tr className="odd:bg-gray-200 even:bg-gray-100">

@@ -12,7 +12,7 @@ function DashBoardPage(props) {
 
 	if (!globalLoading) {
 		renderComponent = (
-			<div className="flex h-screen w-full bg-indigo-200 md:p-0 lg:p-8">
+			<div className="flex h-full w-full bg-indigo-200 md:h-screen md:p-0 lg:p-8">
 				<div className="flex w-full overflow-hidden rounded-lg bg-gray-200">
 					<Sidebar />
 					<div className="m-2 flex h-full w-full flex-auto flex-col gap-4 bg-gray-200 pb-4">

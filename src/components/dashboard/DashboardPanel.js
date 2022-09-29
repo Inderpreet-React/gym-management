@@ -33,7 +33,7 @@ export default function DashboardPanel() {
 
 	return (
 		<div className="relative h-full w-full rounded bg-white p-4 shadow-md">
-			<div className="flex h-full flex-col rounded border-2 border-indigo-500 p-8 text-gray-700">
+			<div className="flex h-full flex-col rounded border-2 border-indigo-500 p-4 pt-6 text-gray-700 md:p-8 md:pt-8">
 				{!searchedMember ? (
 					<>
 						<img
@@ -46,8 +46,8 @@ export default function DashboardPanel() {
 						</h3>
 					</>
 				) : (
-					<div className="flex h-full gap-4 divide-x-2 divide-gray-400">
-						<table className="w-1/2 text-left text-lg">
+					<div className="flex h-full flex-col gap-4 divide-y-2 divide-gray-400 md:flex-row md:divide-y-0 md:divide-x-2">
+						<table className="text-md w-full text-left md:w-1/2 md:text-lg">
 							<tbody>
 								<tr>
 									<th className={thClass}>Name</th>
