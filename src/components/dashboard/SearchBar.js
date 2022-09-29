@@ -114,13 +114,13 @@ export default function SearchBar() {
 					ref={searchBarRef}
 					onChange={debouncedSearchBarHandler}
 					placeholder={"Search"}
-					className="text h-full w-5/6 rounded-none border-none focus:ring-0"
+					className="text h-full w-2/3 rounded-none border-none focus:ring-0 md:w-5/6"
 					type="text"
 				/>
-				<div className="flex h-full w-1/6 items-center justify-evenly bg-white  px-4">
+				<div className="flex h-full w-1/3 items-center justify-evenly bg-white px-4  md:w-1/6">
 					<ArrowLeftOnRectangleIcon
 						onClick={signOutHandler}
-						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 ${
+						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 md:h-10 md:w-10 ${
 							loggingOut ? "cursor-wait" : ""
 						}`}
 					/>
