@@ -6,13 +6,13 @@ import PageNotFound from "./pages/PageNotFound";
 import React from "react";
 
 function App() {
-	return (
-		<Routes>
-			<Route path="/" element={<LoginPage />} />
-			<Route path="/dashboard/*" element={<DashBoardPage />} />
-			<Route path="*" element={<PageNotFound />} />
-		</Routes>
-	);
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/dashboard/*" element={<DashBoardPage />} />
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
+  );
 }
 
 export default App;
