@@ -3,6 +3,7 @@ import DashboardRoutes from "./components/dashboard/DashboardRoutes";
 import LoginPage from "./pages/LoginPage";
 import DashBoardPage from "./pages/DashBoardPage";
 import PageNotFound from "./pages/PageNotFound";
+import React from "react";
 
 function App() {
 	return (
