@@ -118,12 +118,17 @@ export default function SearchBar() {
 					type="text"
 				/>
 				<div className="flex h-full w-1/3 items-center justify-evenly bg-white px-4  md:w-1/6">
-					<ArrowLeftOnRectangleIcon
-						onClick={signOutHandler}
-						className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 md:h-8 md:w-8 ${
-							loggingOut ? "cursor-wait" : ""
-						}`}
-					/>
+					<div className="group relative">
+						<ArrowLeftOnRectangleIcon
+							onClick={signOutHandler}
+							className={`h-7 w-7 cursor-pointer text-gray-500 hover:text-rose-500 md:h-8 md:w-8 ${
+								loggingOut ? "cursor-wait" : ""
+							}`}
+						/>
+						<div className="absolute top-full left-0 italic text-gray-700 opacity-0 group-hover:opacity-100">
+							Logout
+						</div>
+					</div>
 					<img src={Eren} alt="Profile" className="h-10 w-10 rounded-full" />
 				</div>
 			</div>
