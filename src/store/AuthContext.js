@@ -7,8 +7,7 @@ import {
 	getDocs,
 	query,
 	orderBy,
-	doc,
-	getDoc,
+	onSnapshot,
 } from "firebase/firestore";
 const AuthContext = React.createContext();
 
@@ -35,13 +34,8 @@ export default function AuthContextProvider(props) {
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			// User is signed in, see docs for a list of available properties
-			// https://firebase.google.com/docs/reference/js/firebase.User
 			setLoggedUser(user);
-			// ...
 		} else {
-			// User is signed out
-			// ...
 			setLoggedUser(false);
 			setSearchedMember(false);
 			setAllPayments([]);
@@ -51,59 +45,51 @@ export default function AuthContextProvider(props) {
 		}
 	});
 
-	async function fetchPayments() {
-		const q = query(collection(db, "payment"), orderBy("date", "desc"));
-		const querySnapshot = await getDocs(q);
-		setAllPayments([]);
-		querySnapshot.forEach((doc) => {
-			const newData = doc.data();
-			newData["id"] = doc.id;
-			setAllPayments((prevState) => {
-				return [...prevState, newData];
-			});
-		});
-		setGlobalLoading(false);
-		setRefresh(false);
-	}
-
-	async function fetchMembers() {
-		const querySnapshot = await getDocs(collection(db, "members"));
-		setAllMembers([]);
-		querySnapshot.forEach((doc) => {
-			const nameId = doc.id;
-			const name = doc.data().name;
-			setMemberId((prevState) => {
-				const newData = { ...prevState };
-				newData[nameId] = name;
-				return newData;
-			});
-			setAllMembers((prevState) => {
-				return [...prevState, doc.data()];
-			});
-		});
-	}
-
-	function initialDataFetch() {
-		setGlobalLoading(true);
-		fetchMembers();
-		fetchPayments();
-		setInitialLoad(true);
-	}
-
-	function refreshData(id) {
-		setRefresh(true);
-		console.log("refreshing");
-		fetchMembers();
-		fetchPayments();
-	}
-
 	useEffect(() => {
 		if (!initialLoad && loggedUser) {
 			if (allMembers.length > 0) {
 				return;
 			}
+			setGlobalLoading(true);
+			const q = collection(db, "members");
+			setAllMembers([]);
+			const unsubMembers = onSnapshot(q, (querySnapshot) => {
+				setAllMembers([]);
+				setMemberId([]);
+				querySnapshot.forEach((doc) => {
+					const nameId = doc.id;
+					const name = doc.data().name;
+					setMemberId((prevState) => {
+						const newData = { ...prevState };
+						newData[nameId] = name;
+						return newData;
+					});
+					const newData = doc.data();
+					newData["id"] = doc.id;
+					setAllMembers((prevState) => {
+						return [...prevState, newData];
+					});
+				});
+			});
+			const q2 = query(collection(db, "payment"), orderBy("date", "desc"));
+			const unsubPayments = onSnapshot(q2, (querySnapshot) => {
+				setAllPayments([]);
+				querySnapshot.forEach((doc) => {
+					const newData = doc.data();
+					newData["id"] = doc.id;
+					setAllPayments((prevState) => {
+						return [...prevState, newData];
+					});
+				});
+				setGlobalLoading(false);
+			});
+
 			console.log("Initial data request dispatched");
-			initialDataFetch();
+			// initialDataFetch();
+			return () => {
+				unsubMembers();
+				unsubPayments();
+			};
 		}
 	}, [loggedUser]);
 
@@ -119,7 +105,6 @@ export default function AuthContextProvider(props) {
 		globalLoading,
 		planAmounts,
 		refresh,
-		refreshData,
 	};
 
 	return (

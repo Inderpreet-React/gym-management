@@ -14,35 +14,12 @@ export default function UpdateSubscriptionForm(props) {
 	const bankNameRef = useRef();
 	const cardTypeRef = useRef();
 	const transactionIdRef = useRef();
-	const { planAmounts, setSearchedMember, refreshData } = useAuth();
+	const { planAmounts } = useAuth();
 	const id = props.id;
 	const navigate = useNavigate();
 
 	const spanClasses = "w-1/3";
 	const inputWrapperClasses = "flex items-center gap-4 text-gray-600";
-
-	async function fetchMemberData(id) {
-		// try {
-		// 	const docRef = doc(db, "members", id);
-		// 	const docSnap = await getDoc(docRef);
-		// 	console.log(docSnap.data());
-		// 	const newData = {
-		// 		id: id,
-		// 		name: docSnap.data().name,
-		// 		age: docSnap.data().age,
-		// 		gender: docSnap.data().gender,
-		// 		plan: docSnap.data().currentSubscriptionPlan,
-		// 		currentPlanStartingDate: docSnap.data().currentPlanStartingDate,
-		// 		currentPlanEndingDate: docSnap.data().currentPlanEndingDate,
-		// 		joiningDate: docSnap.data().joiningDate,
-		// 		healthIssue: docSnap.data().healthHistory,
-		// 	};
-		// 	setSearchedMember(newData);
-		// } catch (e) {
-		// 	console.log(e.code, e.message);
-		// } finally {
-		// }
-	}
 
 	function paymentChangeHandler() {
 		setPaymentMethod(paymentMethodRef.current.value);
@@ -55,7 +32,6 @@ export default function UpdateSubscriptionForm(props) {
 	async function createPaymentData(payload) {
 		await addDoc(collection(db, "payment"), payload);
 		setLoading(false);
-		refreshData(id);
 		navigate("members");
 	}
 
