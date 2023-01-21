@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../store/AuthContext";
 import { db } from "../../firebase";
 import { doc, setDoc, addDoc, getDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateSubscriptionForm(props) {
 	const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -15,6 +16,7 @@ export default function UpdateSubscriptionForm(props) {
 	const transactionIdRef = useRef();
 	const { planAmounts, setSearchedMember, refreshData } = useAuth();
 	const id = props.id;
+	const navigate = useNavigate();
 
 	const spanClasses = "w-1/3";
 	const inputWrapperClasses = "flex items-center gap-4 text-gray-600";
@@ -54,11 +56,12 @@ export default function UpdateSubscriptionForm(props) {
 		await addDoc(collection(db, "payment"), payload);
 		setLoading(false);
 		refreshData(id);
+		navigate("members");
 	}
 
 	function planUpdateHandler(e) {
 		e.preventDefault();
-
+		setLoading(true);
 		const userPayload = {};
 		const paymentPayload = {};
 		const plan = parseInt(updatePlanRef.current.value);
