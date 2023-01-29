@@ -35,7 +35,7 @@ export default function NewMemberPanel() {
 	const paymentMethodRef = useRef(paymentMethod);
 	const reciptNoRef = useRef();
 	const bankNameRef = useRef();
-	const cardTypeRef = useRef();
+	const cardtypeRef = useRef();
 	const transactionIdRef = useRef();
 
 	// Classes
@@ -152,7 +152,7 @@ export default function NewMemberPanel() {
 			createUser(userPayload, paymentPayload);
 		} else if (paymentMethod === "Card") {
 			const bank = bankNameRef.current.value;
-			const card = cardTypeRef.current.value;
+			const card = cardtypeRef.current.value;
 			const amount = planAmountState;
 			const subscriptionBought = parseInt(planState);
 			const transactionId = transactionIdRef.current.value;
@@ -162,7 +162,7 @@ export default function NewMemberPanel() {
 				mode: "Card",
 				bank: bank.trim(),
 				date: date,
-				cardType: card,
+				cardtype: card,
 				transactionId: transactionId.trim(),
 				reciptNo: recipt,
 				amount: amount,
@@ -204,7 +204,7 @@ export default function NewMemberPanel() {
 				</div>
 				<div className={inputWrapperClasses}>
 					<span className={spanClasses}>Card</span>
-					<select ref={cardTypeRef}>
+					<select ref={cardtypeRef}>
 						<option value="Credit Card">Credit Card</option>
 						<option value="Debit Card">Debit Card</option>
 					</select>

@@ -12,7 +12,7 @@ export default function UpdateSubscriptionForm(props) {
 	const updatePlanRef = useRef();
 	const reciptNoRef = useRef();
 	const bankNameRef = useRef();
-	const cardTypeRef = useRef();
+	const cardtypeRef = useRef();
 	const transactionIdRef = useRef();
 	const { planAmounts } = useAuth();
 	const id = props.id;
@@ -79,7 +79,7 @@ export default function UpdateSubscriptionForm(props) {
 
 		if (paymentMethod === "Card") {
 			paymentPayload["bank"] = bankNameRef.current.value;
-			paymentPayload["cardtype"] = cardTypeRef.current.value;
+			paymentPayload["cardtype"] = cardtypeRef.current.value;
 			paymentPayload["transactionId"] = transactionIdRef.current.value;
 		}
 
@@ -125,7 +125,7 @@ export default function UpdateSubscriptionForm(props) {
 					</div>
 					<div className={inputWrapperClasses}>
 						<span className={spanClasses}>Card</span>
-						<select ref={cardTypeRef}>
+						<select ref={cardtypeRef}>
 							<option value="Credit Card">Credit Card</option>
 							<option value="Debit Card">Debit Card</option>
 						</select>

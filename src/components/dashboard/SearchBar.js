@@ -80,6 +80,7 @@ export default function SearchBar() {
 				};
 
 				setSearchedMember(newData);
+				navigate("/dashboard");
 			} catch (e) {
 				console.log(e.code, e.message);
 			} finally {
@@ -125,7 +126,7 @@ export default function SearchBar() {
 								loggingOut ? "cursor-wait" : ""
 							}`}
 						/>
-						<div className="absolute top-full left-0 italic text-gray-700 opacity-0 group-hover:opacity-100">
+						<div className="absolute top-1/4 right-full italic text-gray-700 opacity-0 group-hover:opacity-100">
 							Logout
 						</div>
 					</div>
