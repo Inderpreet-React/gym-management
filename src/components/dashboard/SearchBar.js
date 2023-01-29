@@ -80,6 +80,7 @@ export default function SearchBar() {
 				};
 
 				setSearchedMember(newData);
+				searchBarRef.current.value = "";
 				navigate("/dashboard");
 			} catch (e) {
 				console.log(e.code, e.message);
