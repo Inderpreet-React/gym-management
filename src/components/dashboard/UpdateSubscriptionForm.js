@@ -32,7 +32,7 @@ export default function UpdateSubscriptionForm(props) {
 	async function createPaymentData(payload) {
 		await addDoc(collection(db, "payment"), payload);
 		setLoading(false);
-		navigate("members");
+		navigate("payment");
 	}
 
 	function planUpdateHandler(e) {
@@ -83,7 +83,7 @@ export default function UpdateSubscriptionForm(props) {
 			paymentPayload["transactionId"] = transactionIdRef.current.value;
 		}
 
-		console.log(userPayload, paymentPayload);
+		console.log(userPayload, paymentPayload, "Payload");
 		setLoading(true);
 		updateUserData(id, userPayload);
 		createPaymentData(paymentPayload);

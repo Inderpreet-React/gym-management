@@ -2,13 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
-import {
-	collection,
-	getDocs,
-	query,
-	orderBy,
-	onSnapshot,
-} from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -20,7 +14,6 @@ export default function AuthContextProvider(props) {
 	const [globalLoading, setGlobalLoading] = useState(false);
 	const [searchedMember, setSearchedMember] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(false);
-	const [refresh, setRefresh] = useState(false);
 	const [allPayments, setAllPayments] = useState([]);
 	const [allMembers, setAllMembers] = useState([]);
 	const [memberId, setMemberId] = useState({});
@@ -104,7 +97,6 @@ export default function AuthContextProvider(props) {
 		setLoggedUser,
 		globalLoading,
 		planAmounts,
-		refresh,
 	};
 
 	return (

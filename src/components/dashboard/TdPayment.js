@@ -9,6 +9,7 @@ export default function TbPayment(props) {
 	const subscriptionBought = props.payment.subscriptionBought;
 	const reciptNo = props.payment.reciptNo;
 	const mode = props.payment.mode;
+	console.log(mode);
 
 	const tdClassName = "py-2 px-4 md:px-0 whitespace-nowrap";
 	return (
@@ -22,8 +23,8 @@ export default function TbPayment(props) {
 			<td className={tdClassName}>{reciptNo}</td>
 			<td className={tdClassName}>
 				{mode === "Cash"
-					? mode
-					: `${props.payment.bank} ${props.payment.cardType}`}
+					? "Cash"
+					: `${props.payment.bank} ${props.payment.cardtype}`}
 			</td>
 		</tr>
 	);

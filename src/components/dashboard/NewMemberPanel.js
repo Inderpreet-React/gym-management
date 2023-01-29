@@ -55,7 +55,7 @@ export default function NewMemberPanel() {
 					paymentPayload
 				);
 				console.log(memberRef.id, paymentRef.id);
-				navigate("members");
+				navigate("/dashboard/members");
 			} catch (e) {
 				console.log(e.code, e.message);
 				setError(e.message);
